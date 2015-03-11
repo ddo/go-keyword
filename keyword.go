@@ -4,13 +4,13 @@ import (
 	"strings"
 )
 
-type Keyword struct {
+type Checker struct {
 	sensitive bool
 	keyword   []string
 	exclude   []string
 }
 
-func New(keyword, exclude string, sensitive bool) *Keyword {
+func New(keyword, exclude string, sensitive bool) *Checker {
 	//lower case all if no sensitive
 	if !sensitive {
 		keyword = strings.ToLower(keyword)
@@ -25,14 +25,14 @@ func New(keyword, exclude string, sensitive bool) *Keyword {
 	keywordArr = trimArr(keywordArr)
 	excludeArr = trimArr(excludeArr)
 
-	return &Keyword{
+	return &Checker{
 		keyword:   keywordArr,
 		exclude:   excludeArr,
 		sensitive: sensitive,
 	}
 }
 
-func (k *Keyword) CheckKeyword(str string) bool {
+func (k *Checker) CheckKeyword(str string) bool {
 	if !k.sensitive {
 		str = strings.ToLower(str)
 	}
@@ -40,7 +40,7 @@ func (k *Keyword) CheckKeyword(str string) bool {
 	return test(k.keyword, str)
 }
 
-func (k *Keyword) CheckExclude(str string) bool {
+func (k *Checker) CheckExclude(str string) bool {
 	if !k.sensitive {
 		str = strings.ToLower(str)
 	}
@@ -48,7 +48,7 @@ func (k *Keyword) CheckExclude(str string) bool {
 	return test(k.exclude, str)
 }
 
-func (k *Keyword) Check(str string) bool {
+func (k *Checker) Check(str string) bool {
 	return k.CheckKeyword(str) && !k.CheckExclude(str)
 }
 
