@@ -37,6 +37,11 @@ func (k *Checker) CheckKeyword(str string) bool {
 		str = strings.ToLower(str)
 	}
 
+	// if keyword is empty -> always true
+	if len(k.keyword) == 0 {
+		return true
+	}
+
 	return test(k.keyword, str)
 }
 

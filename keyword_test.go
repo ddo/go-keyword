@@ -80,3 +80,47 @@ func TestCheckFail(t *testing.T) {
 		t.Error()
 	}
 }
+
+func TestCheckEmptyKeywordExclude(t *testing.T) {
+	keyword := New("", "", false)
+
+	if !keyword.Check("Lorem ipsum dolor sit amet") {
+		t.Error()
+	}
+
+	if !keyword.Check("") {
+		t.Error()
+	}
+}
+
+func TestCheckEmptyKeyword(t *testing.T) {
+	keyword := New("", "exclude", false)
+
+	if !keyword.Check("Lorem ipsum dolor sit amet") {
+		t.Error()
+	}
+
+	if !keyword.Check("") {
+		t.Error()
+	}
+
+	if keyword.Check("exclude") {
+		t.Error()
+	}
+}
+
+func TestCheckEmptyExclude(t *testing.T) {
+	keyword := New("keyword", "", false)
+
+	if keyword.Check("Lorem ipsum dolor sit amet") {
+		t.Error()
+	}
+
+	if keyword.Check("") {
+		t.Error()
+	}
+
+	if !keyword.Check("keyword") {
+		t.Error()
+	}
+}
