@@ -1,8 +1,8 @@
-# keyword [![Build Status][travis-img]][travis-url] [![Doc][godoc-img]][godoc-url]
+# keyword [![Build Status][semaphore-img]][semaphore-url] [![Doc][godoc-img]][godoc-url]
 > :mag: word matching in text 
 
-[travis-img]: https://img.shields.io/travis/ddo/go-keyword.svg?style=flat-square
-[travis-url]: https://travis-ci.org/ddo/go-keyword
+[semaphore-img]: https://semaphoreci.com/api/v1/projects/04fc8f93-78b7-4a13-96e9-8c4adb38f2a2/657485/badge.svg
+[semaphore-url]: https://semaphoreci.com/ddo/go-keyword
 
 [godoc-img]: https://img.shields.io/badge/godoc-Reference-brightgreen.svg?style=flat-square
 [godoc-url]: https://godoc.org/github.com/ddo/go-keyword
