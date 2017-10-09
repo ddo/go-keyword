@@ -69,7 +69,7 @@ func test(strArr []string, str string) bool {
 
 func trimArr(arr []string) (trimmedArr []string) {
 	for i := 0; i < len(arr); i++ {
-		str := strings.Trim(arr[i], " ")
+		str := strings.TrimSpace(arr[i])
 
 		//remove empty string
 		if str == "" {
