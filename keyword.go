@@ -4,11 +4,17 @@ import (
 	"strings"
 )
 
+const (
+	orSeparator  = ","
+	andSeparator = "&&"
+)
+
 // Checker .
 type Checker struct {
 	sensitive bool
-	keyword   []string
-	exclude   []string
+
+	keyword [][]string
+	exclude [][]string
 }
 
 // New .
@@ -19,18 +25,11 @@ func New(keyword, exclude string, sensitive bool) *Checker {
 		exclude = strings.ToLower(exclude)
 	}
 
-	// split
-	keywordArr := strings.Split(keyword, ",")
-	excludeArr := strings.Split(exclude, ",")
-
-	// trim
-	keywordArr = trimArr(keywordArr)
-	excludeArr = trimArr(excludeArr)
-
 	return &Checker{
-		keyword:   keywordArr,
-		exclude:   excludeArr,
 		sensitive: sensitive,
+
+		keyword: transform(keyword),
+		exclude: transform(exclude),
 	}
 }
 
@@ -54,6 +53,11 @@ func (k *Checker) CheckExclude(str string) bool {
 		str = strings.ToLower(str)
 	}
 
+	// if exclude is empty -> always false
+	if len(k.exclude) == 0 {
+		return false
+	}
+
 	return test(k.exclude, str)
 }
 
@@ -62,7 +66,17 @@ func (k *Checker) Check(str string) bool {
 	return k.CheckKeyword(str) && !k.CheckExclude(str)
 }
 
-func test(strArr []string, str string) bool {
+func test(strArr [][]string, str string) bool {
+	for i := 0; i < len(strArr); i++ {
+		if !testArr(strArr[i], str) {
+			return false
+		}
+	}
+
+	return true
+}
+
+func testArr(strArr []string, str string) bool {
 	for i := 0; i < len(strArr); i++ {
 		if strings.Contains(str, strArr[i]) {
 			return true
@@ -83,5 +97,26 @@ func trimArr(arr []string) (trimmedArr []string) {
 
 		trimmedArr = append(trimmedArr, str)
 	}
+	return
+}
+
+func transform(str string) (res [][]string) {
+	// split and
+	andArr := strings.Split(str, andSeparator)
+	andArr = trimArr(andArr)
+
+	// split or
+	for i := 0; i < len(andArr); i++ {
+		orArr := strings.Split(andArr[i], orSeparator)
+		orArr = trimArr(orArr)
+
+		// skip empty
+		if len(orArr) == 0 {
+			continue
+		}
+
+		res = append(res, orArr)
+	}
+
 	return
 }
