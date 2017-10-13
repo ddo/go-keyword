@@ -4,24 +4,26 @@ import (
 	"strings"
 )
 
+// Checker .
 type Checker struct {
 	sensitive bool
 	keyword   []string
 	exclude   []string
 }
 
+// New .
 func New(keyword, exclude string, sensitive bool) *Checker {
-	//lower case all if no sensitive
+	// lower case all if no sensitive
 	if !sensitive {
 		keyword = strings.ToLower(keyword)
 		exclude = strings.ToLower(exclude)
 	}
 
-	//split
+	// split
 	keywordArr := strings.Split(keyword, ",")
 	excludeArr := strings.Split(exclude, ",")
 
-	//trim
+	// trim
 	keywordArr = trimArr(keywordArr)
 	excludeArr = trimArr(excludeArr)
 
@@ -32,6 +34,7 @@ func New(keyword, exclude string, sensitive bool) *Checker {
 	}
 }
 
+// CheckKeyword .
 func (k *Checker) CheckKeyword(str string) bool {
 	if !k.sensitive {
 		str = strings.ToLower(str)
@@ -45,6 +48,7 @@ func (k *Checker) CheckKeyword(str string) bool {
 	return test(k.keyword, str)
 }
 
+// CheckExclude .
 func (k *Checker) CheckExclude(str string) bool {
 	if !k.sensitive {
 		str = strings.ToLower(str)
@@ -53,6 +57,7 @@ func (k *Checker) CheckExclude(str string) bool {
 	return test(k.exclude, str)
 }
 
+// Check .
 func (k *Checker) Check(str string) bool {
 	return k.CheckKeyword(str) && !k.CheckExclude(str)
 }
@@ -71,7 +76,7 @@ func trimArr(arr []string) (trimmedArr []string) {
 	for i := 0; i < len(arr); i++ {
 		str := strings.TrimSpace(arr[i])
 
-		//remove empty string
+		// remove empty string
 		if str == "" {
 			continue
 		}
