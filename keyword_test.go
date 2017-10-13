@@ -5,18 +5,18 @@ import (
 	"testing"
 )
 
-var keyword = New("k∑¥, qwerty", "   exc, LUde,, ", false)
+var checker = New("k∑¥, qwerty", "   exc, LUde,, ", false)
 
 func TestNew(t *testing.T) {
-	if keyword == nil {
+	if checker == nil {
 		t.Error()
 	}
 
-	if !reflect.DeepEqual(keyword.keyword, [][]string{{"k∑¥", "qwerty"}}) {
+	if !reflect.DeepEqual(checker.keyword, [][]string{{"k∑¥", "qwerty"}}) {
 		t.Error()
 	}
 
-	if !reflect.DeepEqual(keyword.exclude, [][]string{{"exc", "lude"}}) {
+	if !reflect.DeepEqual(checker.exclude, [][]string{{"exc", "lude"}}) {
 		t.Error()
 	}
 }
@@ -60,15 +60,15 @@ func TestAndNewEmpty(t *testing.T) {
 }
 
 func TestCheckKeyword(t *testing.T) {
-	if !keyword.CheckKeyword("k∑¥word") {
+	if !checker.CheckKeyword("k∑¥word") {
 		t.Error()
 	}
 
-	if !keyword.CheckKeyword("       k∑¥word        ") {
+	if !checker.CheckKeyword("       k∑¥word        ") {
 		t.Error()
 	}
 
-	if !keyword.CheckKeyword("Lorem ipsum dolor sit amet, k∑¥word consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua") {
+	if !checker.CheckKeyword("Lorem ipsum dolor sit amet, k∑¥word consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua") {
 		t.Error()
 	}
 }
@@ -86,7 +86,7 @@ func TestAndCheckKeyword(t *testing.T) {
 }
 
 func TestCheckKeywordFail(t *testing.T) {
-	if keyword.CheckKeyword("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua") {
+	if checker.CheckKeyword("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua") {
 		t.Error()
 	}
 }
@@ -100,15 +100,15 @@ func TestAndCheckKeywordFail(t *testing.T) {
 }
 
 func TestCheckExclude(t *testing.T) {
-	if !keyword.CheckExclude("exclue") {
+	if !checker.CheckExclude("exclue") {
 		t.Error()
 	}
 
-	if !keyword.CheckExclude("       exclue        ") {
+	if !checker.CheckExclude("       exclue        ") {
 		t.Error()
 	}
 
-	if !keyword.CheckExclude("Lorem ipsum dolor sit amet, exclue consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua") {
+	if !checker.CheckExclude("Lorem ipsum dolor sit amet, exclue consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua") {
 		t.Error()
 	}
 }
@@ -130,7 +130,7 @@ func TestAndCheckExclude(t *testing.T) {
 }
 
 func TestCheckExcludeFail(t *testing.T) {
-	if keyword.CheckExclude("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua") {
+	if checker.CheckExclude("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua") {
 		t.Error()
 	}
 }
@@ -144,11 +144,11 @@ func TestAndCheckExcludeFail(t *testing.T) {
 }
 
 func TestCheck(t *testing.T) {
-	if !keyword.Check("Lorem ipsum dolor sit amet, k∑¥word consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua") {
+	if !checker.Check("Lorem ipsum dolor sit amet, k∑¥word consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua") {
 		t.Error()
 	}
 
-	if !keyword.Check("Lorem ipsum dolor sit amet, k∑¥ consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua") {
+	if !checker.Check("Lorem ipsum dolor sit amet, k∑¥ consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua") {
 		t.Error()
 	}
 }
@@ -166,11 +166,11 @@ func TestAndCheck(t *testing.T) {
 }
 
 func TestCheckFail(t *testing.T) {
-	if keyword.Check("Lorem ipsum dolor sit amet, k∑¥word exclude consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua") {
+	if checker.Check("Lorem ipsum dolor sit amet, k∑¥word exclude consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua") {
 		t.Error()
 	}
 
-	if keyword.Check("Lorem ipsum dolor sit amet, k∑¥ EXCLUDE consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua") {
+	if checker.Check("Lorem ipsum dolor sit amet, k∑¥ EXCLUDE consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua") {
 		t.Error()
 	}
 }
@@ -188,89 +188,89 @@ func TestAndCheckFail(t *testing.T) {
 }
 
 func TestCheckEmptyKeywordExclude(t *testing.T) {
-	keyword := New("", "", false)
+	checker := New("", "", false)
 
-	if !keyword.Check("Lorem ipsum dolor sit amet") {
+	if !checker.Check("Lorem ipsum dolor sit amet") {
 		t.Error()
 	}
 
-	if !keyword.Check("") {
+	if !checker.Check("") {
 		t.Error()
 	}
 }
 
 func TestAndCheckEmptyKeywordExclude(t *testing.T) {
-	keyword := New(",,,&&,,", "&&,,,", false)
+	checker := New(",,,&&,,", "&&,,,", false)
 
-	if !keyword.Check("Lorem ipsum dolor sit amet") {
+	if !checker.Check("Lorem ipsum dolor sit amet") {
 		t.Error()
 	}
 
-	if !keyword.Check("") {
+	if !checker.Check("") {
 		t.Error()
 	}
 }
 
 func TestCheckEmptyKeyword(t *testing.T) {
-	keyword := New("", "exclude", false)
+	checker := New("", "exclude", false)
 
-	if !keyword.Check("Lorem ipsum dolor sit amet") {
+	if !checker.Check("Lorem ipsum dolor sit amet") {
 		t.Error()
 	}
 
-	if !keyword.Check("") {
+	if !checker.Check("") {
 		t.Error()
 	}
 
-	if keyword.Check("exclude") {
+	if checker.Check("exclude") {
 		t.Error()
 	}
 }
 
 func TestAndCheckEmptyKeyword(t *testing.T) {
-	keyword := New("", "exclude && 123", false)
+	checker := New("", "exclude && 123", false)
 
-	if !keyword.Check("Lorem ipsum dolor sit amet") {
+	if !checker.Check("Lorem ipsum dolor sit amet") {
 		t.Error()
 	}
 
-	if !keyword.Check("") {
+	if !checker.Check("") {
 		t.Error()
 	}
 
-	if keyword.Check("exclude 123") {
+	if checker.Check("exclude 123") {
 		t.Error()
 	}
 }
 
 func TestCheckEmptyExclude(t *testing.T) {
-	keyword := New("keyword", "", false)
+	checker := New("keyword", "", false)
 
-	if keyword.Check("Lorem ipsum dolor sit amet") {
+	if checker.Check("Lorem ipsum dolor sit amet") {
 		t.Error()
 	}
 
-	if keyword.Check("") {
+	if checker.Check("") {
 		t.Error()
 	}
 
-	if !keyword.Check("keyword") {
+	if !checker.Check("keyword") {
 		t.Error()
 	}
 }
 
 func TestAndCheckEmptyExclude(t *testing.T) {
-	keyword := New("keyword && 123", "", false)
+	checker := New("keyword && 123", "", false)
 
-	if keyword.Check("Lorem ipsum dolor sit amet") {
+	if checker.Check("Lorem ipsum dolor sit amet") {
 		t.Error()
 	}
 
-	if keyword.Check("") {
+	if checker.Check("") {
 		t.Error()
 	}
 
-	if !keyword.Check("123 keyword") {
+	if !checker.Check("123 keyword") {
 		t.Error()
 	}
 }
